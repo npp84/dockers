@@ -1,0 +1,31 @@
+steps:
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 
+           'us-central1-docker.pkg.dev/stunning-saga-386406/iitmugpg/myimage', 
+           '.']
+
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 
+           'us-central1-docker.pkg.dev/stunning-saga-386406/iitmugpg/myimage']
+
+  # Entrypoint, timeout and environment variables
+  - name: 'gcr.io/cloud-builders/gcloud'
+        args: [ 'run'
+            -  "deploy"
+            -  "myimage"
+            -  "--image"
+            -  "us-central1-docker.pkg.dev/stunning-saga-386406/iitmugpg/myimage"
+            -  "--region"
+            -  "us-central1"
+            -  "--platfrom"
+            -  "managed"
+            -  "--allow-unauthenticated"
+            -  "--port"
+            -  "5000"
+              
+    options: 
+    logging: CLOUD_LOGGING_ONLY
+      - 
+
